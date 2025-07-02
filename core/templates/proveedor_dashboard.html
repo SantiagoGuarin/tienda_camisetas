@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel del Proveedor{% endblock %}
+
+{% block cabecera %}
+<h1>📦 Hola, {{ request.user.username }}</h1>
+<p>Este es tu panel como <strong>Proveedor</strong>.</p>
+{% endblock %}
+
+{% block contenido %}
+<h2>➕ Registrar camisetas disponibles</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="centrado">
+        <button type="submit" class="btn">Registrar camiseta</button>
+    </div>
+</form>
+
+<h2>👕 Tu stock registrado</h2>
+
+{% if camisetas %}
+    <table class="tabla-ventas">
+        <thead>
+            <tr>
+                <th>Talla</th>
+                <th>Color</th>
+                <th>Calidad</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for camiseta in camisetas %}
+                <tr>
+                    <td>{{ camiseta.talla }}</td>
+                    <td>{{ camiseta.color }}</td>
+                    <td>{{ camiseta.calidad }}</td>
+                    <td>{{ camiseta.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No has registrado camisetas aún.</p>
+{% endif %}
+{% endblock %}

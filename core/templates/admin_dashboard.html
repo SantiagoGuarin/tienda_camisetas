@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel del Administrador{% endblock %}
+
+{% block cabecera %}
+<h1>🛠️ Panel del Administrador</h1>
+
+{% endblock %}
+
+{% block contenido %}
+{% comment %} 
+<p>Usuarios registrados en el sistema:</p>
+<h2>👥 Usuarios</h2>
+<table class="tabla-ventas">
+    <thead>
+        <tr>
+            <th>Nombre de usuario</th>
+            <th>Correo</th>
+            <th>Tipo</th>
+            <th>¿Activo?</th>
+            <th>¿Staff?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.get_tipo_display }}</td>
+            <td>{{ usuario.is_active|yesno:"✔️,❌" }}</td>
+            <td>{{ usuario.is_staff|yesno:"✔️,❌" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay usuarios registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr> {% endcomment %}
+
+<h2>📦 Pedidos pendientes</h2>
+<table class="tabla-ventas">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Detalles</th>
+            <th>¿Aceptable?</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido in pedidos_pendientes %}
+        <tr>
+            <td>{{ pedido.cliente.username }}</td>
+            <td>{{ pedido.fecha }}</td>
+            <td>
+                <ul>
+                    {% for detalle in pedido.detalles.all %}
+                    <li>
+                        <strong>{{ detalle.diseño.titulo }}</strong><br>
+                        Cantidad: {{ detalle.cantidad }}<br>
+                        Talla: {{ detalle.camiseta_pedido.talla }}<br>
+                        Color: {{ detalle.camiseta_pedido.color }}<br>
+                        Calidad: {{ detalle.camiseta_pedido.calidad }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                {% if pedido.puede_aceptarse %}
+                <form method="post" action="{% url 'realizar_pedido' pedido.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Realizar pedido</button>
+                </form>
+                {% else %}
+                <span class="no">❌ No (falta stock)</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">No hay pedidos pendientes.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<h2>📜 Historial de pedidos aceptados</h2>
+<table class="tabla-ventas">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Detalles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido in pedidos_aceptados %}
+        <tr>
+            <td>{{ pedido.cliente.username }}</td>
+            <td>{{ pedido.fecha }}</td>
+            <td>
+                <ul>
+                    {% for detalle in pedido.detalles.all %}
+                    <li>
+                        <strong>{{ detalle.diseño.titulo }}</strong><br>
+                        Cantidad: {{ detalle.cantidad }}<br>
+                        Talla: {{ detalle.camiseta_pedido.talla }}<br>
+                        Color: {{ detalle.camiseta_pedido.color }}<br>
+                        Calidad: {{ detalle.camiseta_pedido.calidad }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No hay pedidos aceptados aún.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<h2>🧾 Entradas de Stock de Proveedores</h2>
+<table class="tabla-ventas">
+    <thead>
+        <tr>
+            <th>Proveedor</th>
+            <th>Talla</th>
+            <th>Color</th>
+            <th>Calidad</th>
+            <th>Cantidad disponible</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for camiseta in camisetas %}
+        <tr>
+            <td>{{ camiseta.proveedor.username }}</td>
+            <td>{{ camiseta.talla }}</td>
+            <td>{{ camiseta.color }}</td>
+            <td>{{ camiseta.calidad }}</td>
+            <td>{{ camiseta.cantidad }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No hay stock registrado por proveedores.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

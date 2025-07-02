@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Favoritos{% endblock %}
+
+{% block contenido %}
+<h2>❤️ Mis Diseños Favoritos</h2>
+<div class="galeria-disenos">
+    {% for fav in favoritos %}
+        <div class="tarjeta-diseno">
+            <img src="{{ fav.diseño.imagen.url }}" alt="Diseño favorito">
+            <h3>{{ fav.diseño.titulo }}</h3>
+            <p><strong>Diseñador:</strong> {{ fav.diseño.disenador.username }}</p>
+            <a href="{% url 'agregar_al_carrito' fav.diseño.id %}" class="btn">🛒 Añadir al carrito</a>
+            <a href="{% url 'eliminar_favorito' fav.diseño.id %}" class="btn">💔 Quitar Favorito</a>
+        </div>
+    {% empty %}
+        <p>Aún no has marcado diseños como favoritos.</p>
+    {% endfor %}
+</div>
+<div class="centrado" style="margin-top: 20px;">
+    <a href="{% url 'cliente_dashboard' %}" class="btn">← Volver al panel</a>
+</div>
+{% endblock %}

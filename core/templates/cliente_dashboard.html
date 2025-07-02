@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel del Cliente{% endblock %}
+
+{% block bienvenida %}
+Bienvenido, <strong>{{ request.user.username }}</strong>. Este es tu panel como <strong>Cliente</strong>.
+{% endblock %}
+
+{% block contenido %}
+    <h2>🎨 Diseños Disponibles</h2>
+
+    <!-- 🔍 Filtros -->
+    <form method="get" class="centrado" style="margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap;">
+        <div>
+            <label for="diseñador"><strong>Filtrar por diseñador:</strong></label>
+            <select name="disenador" id="diseñador" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                {% for user in diseñadores %}
+                    <option value="{{ user.id }}" {% if user.id|stringformat:"s" == diseñador_id %}selected{% endif %}>
+                        {{ user.username }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="calificacion"><strong>Filtrar por calificación:</strong></label>
+            <select name="calificacion" id="calificacion" onchange="this.form.submit()">
+                <option value="">Todas</option>
+                {% for i in rating_options %}
+                    <option value="{{ i }}" {% if i|stringformat:"s" == min_rating %}selected{% endif %}>{{ i }}⭐</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <a href="{% url 'cliente_dashboard' %}" class="btn">🔄 Limpiar Filtros</a>
+        </div>
+    </form>
+
+    <a href="{% url 'ver_favoritos' %}" class="btn">❤️ Ver Favoritos</a>
+
+    <!-- 🎨 Galería de diseños -->
+    <div class="galeria-disenos">
+        {% for diseno in disenos %}
+            <div class="tarjeta-diseno">
+                <img src="{{ diseno.imagen.url }}" alt="Diseño de {{ diseno.disenador.username }}" width="200">
+                <h3>{{ diseno.titulo }}</h3>
+                <p><strong>Diseñador:</strong> {{ diseno.disenador.username }}</p>
+                <p><strong>Calificación:</strong>
+                    {% if diseno.promedio_puntuacion %}
+                        {{ diseno.promedio_puntuacion|floatformat:1 }} ⭐
+                    {% else %}
+                        Sin valoraciones aún
+                    {% endif %}
+                </p>
+                <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <a href="{% url 'detalle_diseno' diseno.id %}" class="btn">🔍 Ver Detalles</a>
+                    <a href="{% url 'agregar_al_carrito' diseno.id %}" class="btn">🛒 Añadir al carrito</a>
+
+                    {% if diseno.id in favoritos_ids %}
+                        <a href="{% url 'eliminar_favorito' diseno.id %}" class="btn">💔 Quitar Favorito</a>
+                    {% else %}
+                        <a href="{% url 'agregar_favorito' diseno.id %}" class="btn">❤️ Marcar como Favorito</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No hay diseños disponibles por ahora.</p>
+        {% endfor %}
+    </div>
+
+    <div class="centrado">
+        <a href="{% url 'ver_carrito' %}" class="btn">🧾 Ver Carrito</a>
+        <a href="{% url 'historial_pedidos' %}" class="btn">📜 Ver Historial de Pedidos</a>
+    </div>
+{% endblock %}

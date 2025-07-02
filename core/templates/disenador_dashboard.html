@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Panel del Diseñador{% endblock %}
+
+{% block cabecera %}
+<h1>🎨 Hola, {{ request.user.username }}</h1>
+<p>Bienvenido a tu panel como <strong>Diseñador</strong>.</p>
+{% endblock %}
+
+{% block contenido %}
+<ul class="acciones">
+    <li>📤 <a href="{% url 'publicar_diseno' %}" class="btn">Subir un nuevo diseño</a></li>
+    <li>📈 <a href="{% url 'estadisticas_diseno' %}" class="btn">Ver estadísticas de ventas</a></li>
+    <li>💰 <a href="{% url 'ver_comision' %}" class="btn">Ver ganancias por comisión</a></li>
+</ul>
+{% endblock %}

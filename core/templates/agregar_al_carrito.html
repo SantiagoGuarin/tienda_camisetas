@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar al Carrito{% endblock %}
+
+{% block cabecera %}
+<h2>🛍️ Agregar "{{ diseno.titulo }}" al Carrito</h2>
+{% endblock %}
+
+{% block contenido %}
+    <form method="post" class="centrado">
+        {% csrf_token %}
+
+        <label for="{{ form.talla.id_for_label }}">Talla</label>
+        {{ form.talla }}
+
+        <label for="{{ form.calidad.id_for_label }}">Calidad</label>
+        {{ form.calidad }}
+
+        <label for="{{ form.color.id_for_label }}">Color</label>
+        {{ form.color }}
+
+        <label for="{{ form.cantidad.id_for_label }}">Cantidad</label>
+        {{ form.cantidad }}
+
+        <button type="submit" class="btn">🛒 Agregar al carrito</button>
+    </form>
+
+    <div class="centrado" style="margin-top: 20px;">
+        <a href="{% url 'cliente_dashboard' %}" class="btn">← Volver</a>
+    </div>
+{% endblock %}

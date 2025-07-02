@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block cabecera %}
+<h2>📝 Registro de Usuario</h2>
+{% endblock %}
+
+{% block contenido %}
+<div class="panel">
+    <form method="post">
+        {% csrf_token %}
+
+        <p>{{ form.username.label_tag }} {{ form.username }}</p>
+
+        <p>{{ form.email.label_tag }} {{ form.email }}</p>
+
+        <p>{{ form.tipo.label_tag }} {{ form.tipo }}</p>
+
+        <p>
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            <button type="button" onclick="togglePassword('id_password1', this)" class="btn-sm-secundario">👀 Mostrar</button>
+        </p>
+
+        <p>
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            <button type="button" onclick="togglePassword('id_password2', this)" class="btn-sm-secundario">👀 Mostrar</button>
+        </p>
+
+        <div class="centrado" style="margin-top: 20px;">
+            <button type="submit" class="btn">✅ Crear cuenta</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+        input.type = "text";
+        btn.textContent = "🙈 Ocultar";
+    } else {
+        input.type = "password";
+        btn.textContent = "👀 Mostrar";
+    }
+}
+</script>
+{% endblock %}

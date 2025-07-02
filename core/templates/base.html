@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mi Proyecto{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/estilo_v2.css' %}">
+</head>
+<body>
+    <div class="panel">
+        {% block cabecera %}{% endblock %}
+        {% block contenido %}{% endblock %}
+
+        <div class="logout-btn-container">
+            {% if request.user.is_authenticated %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Cerrar sesión</button>
+                </form>
+            {% elif request.path == '/registro/' %}
+                <p style="text-align:center; margin-top:20px;">
+                    ¿Ya estás registrado?
+                    <a href="{% url 'login' %}" class="btn-sm-secundario">Ingresar</a>
+                </p>
+            {% elif request.path == '/recuperar-password/' %}
+                <a href="{% url 'login' %}" class="btn-sm-secundario">Volver</a>
+            {% elif request.path == '/login/' %}
+                <p style="text-align:center; margin-top:20px;">
+                    ¿No tienes cuenta?
+                    <a href="{% url 'registro' %}" class="btn-sm-secundario">Registrarse</a>
+                </p>
+                <p style="text-align:center; margin-top:20px;">
+                    ¿Oldidaste tu contraseña?
+                    <a href="{% url 'recuperar_password' %}" class="btn-sm-secundario">Recuperar contraseña</a>
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Pedidos{% endblock %}
+
+{% block cabecera %}
+<h2>📦 Historial de tus Pedidos</h2>
+{% endblock %}
+
+{% block contenido %}
+    {% if pedidos %}
+        {% for pedido in pedidos %}
+            <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; margin-bottom: 15px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                <p><strong>🗓️ Fecha:</strong> {{ pedido.fecha }}</p>
+                <p><strong>🧾 Código de Pedido:</strong> {{ pedido.id }}</p>
+                <ul style="margin-top: 10px;">
+                    {% for detalle in pedido.detallepedido_set.all %}
+                        <li>{{ detalle.cantidad }}x {{ detalle.diseño.titulo }} – ${{ detalle.diseño.precio }} c/u</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="centrado">Aún no has realizado compras.</p>
+    {% endif %}
+
+    <div class="centrado" style="margin-top: 20px;">
+        <a href="{% url 'cliente_dashboard' %}" class="btn">← Volver al panel</a>
+    </div>
+{% endblock %}

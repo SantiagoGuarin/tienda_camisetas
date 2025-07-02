@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Publicar Diseño{% endblock %}
+
+{% block bienvenida %}
+Sube tu nuevo diseño para publicarlo en la tienda.
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="alert alert-danger" style="color: red; margin-top: 10px;">
+            <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit" class="btn">📤 Publicar</button>
+    </form>
+
+    <div class="centrado" style="margin-top: 20px;">
+        <a href="{% url 'disenador_dashboard' %}" class="btn">🔙 Volver al Panel</a>
+    </div>
+</div>
+{% endblock %}

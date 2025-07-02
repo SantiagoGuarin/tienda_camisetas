@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Estadísticas de tus diseños{% endblock %}
+
+{% block bienvenida %}
+Aquí puedes ver el rendimiento de tus diseños 🎯
+{% endblock %}
+
+{% block contenido %}
+<h2>Ventas de tus diseños</h2>
+
+<table class="tabla-ventas">
+    <tr>
+        <th>Diseño</th>
+        <th>Unidades Vendidas</th>
+        <th>Ingresos</th>
+    </tr>
+    {% for stat in estadisticas %}
+        <tr>
+            <td>{{ stat.diseño__titulo }}</td>
+            <td>{{ stat.total_vendido }}</td>
+            <td>${{ stat.ingresos }}</td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">No tienes ventas aún.</td>
+        </tr>
+    {% endfor %}
+</table>
+<div class="centrado">
+    <a href="{% url 'disenador_dashboard' %}" class="btn">🔙 Volver al Panel</a>
+</div>
+{% endblock %}

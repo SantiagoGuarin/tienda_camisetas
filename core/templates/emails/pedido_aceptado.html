@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido Aceptado</title>
+</head>
+<body style="font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; padding: 20px; color: #333;">
+
+  <div style="max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <h2 style="color: #444;">🎉 ¡Tu pedido ha sido aceptado!</h2>
+
+    <p>Hola {{ pedido.cliente.username }},</p>
+
+    <p>Gracias por tu compra. Aquí están los detalles de tu pedido:</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead>
+        <tr style="background-color: #f0f4f8;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Diseño</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Talla</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Color</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Calidad</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for detalle in pedido.detalles.all %}
+        <tr>
+          <td style="padding: 10px; border: 1px solid #eee;">{{ detalle.diseño.titulo }}</td>
+          <td style="padding: 10px; border: 1px solid #eee;">{{ detalle.camiseta_pedido.talla }}</td>
+          <td style="padding: 10px; border: 1px solid #eee;">{{ detalle.camiseta_pedido.color }}</td>
+          <td style="padding: 10px; border: 1px solid #eee;">{{ detalle.camiseta_pedido.calidad }}</td>
+          <td style="padding: 10px; border: 1px solid #eee;">{{ detalle.cantidad }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p style="margin-top: 20px;">Puedes recoger tu pedido en la tienda cuando gustes. ¡Gracias por confiar en nosotros! 💙</p>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="http://localhost:8000" style="background-color: #0077cc; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none;">Ir a la tienda</a>
+    </div>
+
+    <p style="font-size: 0.9em; color: #888; margin-top: 30px; text-align: center;">
+      Tienda de Camisetas · Bogotá, Colombia
+    </p>
+  </div>
+
+</body>
+</html>

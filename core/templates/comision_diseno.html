@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Ganancias por Comisión{% endblock %}
+
+{% block bienvenida %}
+💰 Tus Ganancias por Comisión
+{% endblock %}
+
+{% block contenido %}
+<div class="comision-box">
+    <p>Total: <strong>${{ comision|floatformat:2 }}</strong></p>
+    <br>
+    <a href="{% url 'disenador_dashboard' %}" class="btn">🔙 Volver al Panel</a>
+</div>
+{% endblock %}

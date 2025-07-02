@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}Detalles del Diseño{% endblock %}
+
+{% block contenido %}
+<h2>{{ diseno.titulo }}</h2>
+<img src="{{ diseno.imagen.url }}" width="300">
+<p><strong>Diseñador:</strong> {{ diseno.disenador.username }}</p>
+
+<!-- Acciones -->
+<div style="margin: 10px 0;">
+    <a href="{% url 'agregar_al_carrito' diseno.id %}" class="btn">🛒 Añadir al carrito</a>
+    {% if favorito %}
+        <a href="{% url 'eliminar_favorito' diseno.id %}" class="btn">💔 Quitar Favorito</a>
+    {% else %}
+        <a href="{% url 'agregar_favorito' diseno.id %}" class="btn">❤️ Marcar como Favorito</a>
+    {% endif %}
+</div>
+
+<hr>
+
+<!-- ⭐ Valoraciones públicas -->
+<h3>⭐ Calificaciones de los usuarios</h3>
+{% if valoraciones %}
+    {% with promedio=valoraciones|average:"puntuacion" %}
+        <p><strong>Promedio:</strong> {{ promedio|floatformat:1 }} {{ promedio|estrellas }}</p>
+        <p style="font-size: 0.9em; color: gray;">
+            Basado en {{ valoraciones|length }} valoración{{ valoraciones|length|pluralize }}.
+        </p>
+    {% endwith %}
+{% else %}
+    <p>Este diseño aún no ha sido calificado.</p>
+{% endif %}
+
+<hr>
+
+<!-- ⭐ Valoración personal -->
+{% if ha_comprado %}
+    <h3>⭐ Tu calificación</h3>
+    <form method="post">
+        {% csrf_token %}
+        <style>
+            /* Oculta la opción vacía de radio si llegara a existir */
+            input[type="radio"][value=""], label[for^="id_puntuacion_0"] {
+                display: none;
+            }
+        </style>
+        {{ val_form.as_p }}
+        <button type="submit" class="btn">💾 Guardar Calificación</button>
+    </form>
+
+    <!-- 💬 Comentario -->
+    <h3>💬 Comenta este diseño</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ com_form.as_p }}
+        <button type="submit" class="btn">📝 Publicar Comentario</button>
+    </form>
+{% else %}
+    <div style="color: gray;">
+        <p>🛑 <em>Debes comprar este diseño para poder calificar o dejar un comentario.</em></p>
+        <a href="{% url 'agregar_al_carrito' diseno.id %}" class="btn">🛒 Comprar este diseño</a>
+    </div>
+{% endif %}
+
+<hr>
+
+<!-- 📋 Comentarios -->
+<h3>🗣 Comentarios de otros usuarios</h3>
+{% for comentario in comentarios %}
+    <p><strong>{{ comentario.cliente.username }}</strong> ({{ comentario.fecha|date:"d M Y H:i" }})</p>
+    <p>{{ comentario.contenido }}</p>
+    <hr>
+{% empty %}
+    <p>Este diseño aún no tiene comentarios.</p>
+{% endfor %}
+
+<div class="centrado" style="margin-top: 20px;">
+    <a href="{% url 'cliente_dashboard' %}" class="btn">← Volver al panel</a>
+</div>
+{% endblock %}
