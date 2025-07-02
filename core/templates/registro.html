@@ -8,25 +8,77 @@
 
 {% block contenido %}
 <div class="panel">
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
 
-        <p>{{ form.username.label_tag }} {{ form.username }}</p>
+        {# Errores no relacionados a un campo específico #}
+        {% if form.non_field_errors %}
+            <div class="errores-generales">
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 
-        <p>{{ form.email.label_tag }} {{ form.email }}</p>
+        <p>
+            {{ form.username.label_tag }} {{ form.username }}
+            {% if form.username.errors %}
+                <ul>
+                    {% for error in form.username.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </p>
 
-        <p>{{ form.tipo.label_tag }} {{ form.tipo }}</p>
+        <p>
+            {{ form.email.label_tag }} {{ form.email }}
+            {% if form.email.errors %}
+                <ul>
+                    {% for error in form.email.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </p>
+
+        <p>
+            {{ form.tipo.label_tag }} {{ form.tipo }}
+            {% if form.tipo.errors %}
+                <ul>
+                    {% for error in form.tipo.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </p>
 
         <p>
             {{ form.password1.label_tag }}
             {{ form.password1 }}
             <button type="button" onclick="togglePassword('id_password1', this)" class="btn-sm-secundario">👀 Mostrar</button>
+            {% if form.password1.errors %}
+                <ul>
+                    {% for error in form.password1.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </p>
 
         <p>
             {{ form.password2.label_tag }}
             {{ form.password2 }}
             <button type="button" onclick="togglePassword('id_password2', this)" class="btn-sm-secundario">👀 Mostrar</button>
+            {% if form.password2.errors %}
+                <ul>
+                    {% for error in form.password2.errors %}
+                        <li style="color:red;">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </p>
 
         <div class="centrado" style="margin-top: 20px;">
