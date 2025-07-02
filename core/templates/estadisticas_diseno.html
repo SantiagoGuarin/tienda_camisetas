@@ -14,11 +14,11 @@ Aquí puedes ver el rendimiento de tus diseños 🎯
         <th>Unidades Vendidas</th>
         <th>Ingresos</th>
     </tr>
-    {% for stat in estadisticas %}
+    {% for titulo, valores in estadisticas.items %}
         <tr>
-            <td>{{ stat.diseño__titulo }}</td>
-            <td>{{ stat.total_vendido }}</td>
-            <td>${{ stat.ingresos }}</td>
+            <td>{{ titulo }}</td>
+            <td>{{ valores.total_vendido }}</td>
+            <td>${{ valores.ingresos }}</td>
         </tr>
     {% empty %}
         <tr>
