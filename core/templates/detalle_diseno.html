@@ -6,6 +6,7 @@
 <h2>{{ diseno.titulo }}</h2>
 <img src="{{ diseno.imagen.url }}" width="300">
 <p><strong>Diseñador:</strong> {{ diseno.disenador.username }}</p>
+<p><strong>Descripción:</strong> {{ diseno.descripcion|linebreaks }}</p>
 
 <!-- Acciones -->
 <div style="margin: 10px 0;">
@@ -40,12 +41,30 @@
     <form method="post">
         {% csrf_token %}
         <style>
-            /* Oculta la opción vacía de radio si llegara a existir */
+            /* Oculta opción vacía si existe */
             input[type="radio"][value=""], label[for^="id_puntuacion_0"] {
                 display: none;
             }
+            .radio-horizontal {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .radio-horizontal label {
+                margin-right: 5px;
+            }
         </style>
-        {{ val_form.as_p }}
+        
+        <div class="radio-horizontal">
+            {% for radio in val_form.puntuacion %}
+                <label for="{{ radio.id_for_label }}">
+                    {{ radio.tag }} {{ radio.choice_label }}
+                </label>
+            {% endfor %}
+        </div>
+
         <button type="submit" class="btn">💾 Guardar Calificación</button>
     </form>
 
