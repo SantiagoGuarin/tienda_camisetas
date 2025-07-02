@@ -212,12 +212,13 @@ def estadisticas_diseno(request):
         cantidad = detalle.cantidad
         precio = PRECIOS_CALIDAD.get(calidad, 0)
         subtotal = cantidad * precio
+        comision = subtotal * 0.10
 
         if titulo not in datos:
-            datos[titulo] = {'total_vendido': 0, 'ingresos': 0}
+            datos[titulo] = {'total_vendido': 0, 'ingresos': 0.0}
 
         datos[titulo]['total_vendido'] += cantidad
-        datos[titulo]['ingresos'] += subtotal
+        datos[titulo]['ingresos'] += comision
 
     return render(request, 'estadisticas_diseno.html', {'estadisticas': datos})
     
