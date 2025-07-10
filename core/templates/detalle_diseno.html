@@ -41,7 +41,6 @@
     <form method="post">
         {% csrf_token %}
         <style>
-            /* Oculta opción vacía si existe */
             input[type="radio"][value=""], label[for^="id_puntuacion_0"] {
                 display: none;
             }
